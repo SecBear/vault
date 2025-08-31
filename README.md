@@ -23,6 +23,10 @@ This project includes:
 - [direnv](https://direnv.net/) (optional but recommended)
 - Okta developer account or access to Okta organization
 
+Note: if you don't have Nix installed, you can still follow
+along with your own vault binary installed on your system.
+You can install vault for your system [here](https://developer.hashicorp.com/vault/install)
+
 ### Setup
 
 1. **Clone and enter the repository:**
