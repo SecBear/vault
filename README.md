@@ -23,9 +23,9 @@ This project includes:
 - [direnv](https://direnv.net/) (optional but recommended)
 - Okta developer account or access to Okta organization
 
-Note: if you don't have Nix installed, you can still follow
-along with your own vault binary installed on your system.
-You can install vault for your system [here](https://developer.hashicorp.com/vault/install)
+Note: if you don't have Nix installed, you can still follow along with your own
+vault binary installed on your system. You can install vault for your system
+[here](https://developer.hashicorp.com/vault/install)
 
 ### Setup
 
@@ -68,12 +68,12 @@ You can install vault for your system [here](https://developer.hashicorp.com/vau
 
    Overwrite my existing encrypted file with the new secrets:
    ```bash
-   mv config/okta-secrets.sops.yaml.example config/okta-secrets.sops.yaml
+   mv config/vault/okta-secrets.sops.yaml.example config/vault/okta-secrets.sops.yaml
    ```
 
    Once configured, encrypt those secrets
    ```bash
-   sops -e -i config/okta-secrets.sops.yaml
+   sops -e -i config/vault/okta-secrets.sops.yaml
    ```
 
 4. **Start Vault in dev mode:**
@@ -84,9 +84,9 @@ You can install vault for your system [here](https://developer.hashicorp.com/vau
 5. **Apply Terraform configuration:**
 
    This repository uses terraform to manage the configuration of the vault,
-   instead of manually running commands. This way, we can
-   configure the entire vault including policies, authentication methods,
-   secrets engines, auditing, etc. with a single tf apply.
+   instead of manually running commands. This way, we can configure the entire
+   vault including policies, authentication methods, secrets engines, auditing,
+   etc. with a single tf apply.
 
    ```bash
    cd config
@@ -102,14 +102,16 @@ You can install vault for your system [here](https://developer.hashicorp.com/vau
 
 ```
 vault/
-├── config/              # Terraform configurations
-│   ├── *.tf            # Terraform resources
-│   ├── policies/       # Vault policies
-│   └── okta-secrets.sops.yaml  # Encrypted Okta credentials
-├── packages/           # Nix packages
+├──config/              # Terraform configurations
+│  ├── vault/              # Vault internals configuration
+│  │   ├── *.tf            # Terraform resources
+│  │   ├── policies/       # Vault policies
+│  │   └── okta-secrets.sops.yaml  # Encrypted Okta credentials
+│  └── okta/           # Okta configuration
+├─ packages/           # Nix packages
 │   └── vault.nix      # Custom Vault package (v1.20.3)
 ├── modules/           # Nix modules
-│   └── vault.nix      # Vault service configuration module
+│   └─ vault.nix      # Vault service configuration module
 ├── devshell.nix       # Development environment
 ├── flake.nix          # Nix flake configuration
 ├── .sops.yaml         # SOPS encryption config
@@ -152,7 +154,8 @@ vault/
 | `audit-viewer` | Audit viewers         | Read-only access to audit logs                        |
 
 ### TODO
-   - PKI secrets engine configuration
-   - Terraform for okta setup
-   - Add Auth methods (LDAP, Kubernetes)
-   - Database dynamic credentials
+
+- PKI secrets engine configuration
+- Terraform for okta setup
+- Add Auth methods (LDAP, Kubernetes)
+- Database dynamic credentials
