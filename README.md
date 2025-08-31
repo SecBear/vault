@@ -80,7 +80,7 @@ This project includes:
 5. **Apply Terraform configuration:**
 
    This repository uses terraform to manage the configuration of the vault,
-   instead of manually editing the configuration files. This way, we can
+   instead of manually running commands. This way, we can
    configure the entire vault including policies, authentication methods,
    secrets engines, auditing, etc. with a single tf apply.
 
