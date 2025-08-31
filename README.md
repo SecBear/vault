@@ -152,5 +152,7 @@ vault/
 | `audit-viewer` | Audit viewers         | Read-only access to audit logs                        |
 
 ### TODO
-
-- add PKI secrets engine
+   - PKI secrets engine configuration
+   - Terraform for okta setup
+   - Add Auth methods (LDAP, Kubernetes)
+   - Database dynamic credentials
