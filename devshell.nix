@@ -1,10 +1,11 @@
-{pkgs, ...}: let
-  vault = pkgs.callPackage ./packages/vault.nix {}; # 1.20.3
-in
+{pkgs, perSystem, ...}:
   pkgs.mkShell {
     # Add build dependencies
     packages = with pkgs; [
-      vault
+      # builds vault 1.20.3 from source (defined in packages/) 
+      # if taking too long, just use "vault" from upstream nixpkgs
+      perSystem.self.vault 
+
       terraform
       jq
       curl
@@ -31,6 +32,9 @@ in
       echo ""
       echo "Vault POC Development Shell"
       echo "========================="
+      echo ""
+      echo "Vault Version:"
+      echo "  $(vault --version)"
       echo ""
       echo "Environment:"
       echo "  VAULT_ADDR: $VAULT_ADDR"
