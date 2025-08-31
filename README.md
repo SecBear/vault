@@ -62,7 +62,7 @@ This project includes:
    okta_client_secret: "your-client-secret"
    ```
 
-   Overwrite the existing encrypted file with the new secrets:
+   Overwrite my existing encrypted file with the new secrets:
    ```bash
    mv config/okta-secrets.sops.yaml.example config/okta-secrets.sops.yaml
    ```
