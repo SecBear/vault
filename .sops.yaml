@@ -1,0 +1,7 @@
+creation_rules:
+  - path_regex: .*\.sops\.yaml$
+    age: age18p59q2xtlsg8zsu9xk60wg852eqqah5ppp2pxkfn0kyadl6exfkq2272r8
+  - path_regex: .*\.sops\.json$
+    age: age18p59q2xtlsg8zsu9xk60wg852eqqah5ppp2pxkfn0kyadl6exfkq2272r8
+  - path_regex: .*\.sops\.env$
+    age: age18p59q2xtlsg8zsu9xk60wg852eqqah5ppp2pxkfn0kyadl6exfkq2272r8
