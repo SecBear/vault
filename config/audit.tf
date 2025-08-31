@@ -10,7 +10,9 @@ resource "vault_audit" "file" {
   path = "file"
 
   options = {
-    file_path = "/var/log/vault/audit.log"
+    # Local path for audit logs - will be created if it doesn't exist
+    # For production, use /var/log/vault/audit.log
+    file_path = "/tmp/vault-audit.log"
 
     # Log raw request/response data - set to false to hash sensitive data  
     log_raw = "false"
@@ -47,9 +49,9 @@ output "audit_commands" {
   value = {
     check_audit_devices = "vault audit list"
     check_audit_status  = "vault audit list -detailed"
-    view_audit_logs     = "tail -f /var/log/vault/audit.log | jq ."
+    view_audit_logs     = "tail -f /tmp/vault-audit.log | jq ."
     test_audit_hash     = "echo -n 'test-value' | vault write sys/audit-hash/file input=-"
-    search_audit_logs   = "grep REQUEST_ID /var/log/vault/audit.log | jq ."
+    search_audit_logs   = "grep REQUEST_ID /tmp/vault-audit.log | jq ."
   }
 
   description = "Useful commands for managing and viewing audit logs"

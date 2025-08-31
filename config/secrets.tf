@@ -1,11 +1,11 @@
 # Secret Engines in Root Namespace
 
 # Enable KV v2 secrets engine
-resource "vault_mount" "kvv2" {
-  path        = "secret"
-  type        = "kv-v2"
-  description = "KV v2 secret storage"
-}
+#resource "vault_mount" "kvv2" {
+#  path        = "secret"
+#  type        = "kv-v2"
+#  description = "KV v2 secret storage"
+#}
 
 # Enable transit secrets engine for encryption as a service
 resource "vault_mount" "transit" {

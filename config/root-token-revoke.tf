@@ -23,11 +23,7 @@ resource "null_resource" "revoke_root_token" {
   # Ensure this runs AFTER everything else
   depends_on = [
     vault_jwt_auth_backend.okta_oidc,
-    vault_mount.kvv2,
     vault_mount.transit,
-    vault_namespace.admin,
-    vault_namespace.operations,
-    vault_namespace.developer
   ]
 
   provisioner "local-exec" {
