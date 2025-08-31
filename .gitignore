@@ -6,6 +6,7 @@ result
 result-*
 
 # terraform
+terraform*
 .terraform*
 
 # secrets
