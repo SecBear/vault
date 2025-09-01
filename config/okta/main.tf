@@ -36,7 +36,11 @@ resource "okta_app_oauth" "vault_oidc" {
   issuer_mode               = "DYNAMIC"
   omit_secret               = true
   response_types            = ["code"]
-
+  groups_claim {
+    name  = "groups"
+    type  = "filter"
+    value = "Starts with vault-"
+  }
   # Ignore refresh token settings since we don't use refresh tokens
   lifecycle {
     ignore_changes = [

@@ -21,7 +21,7 @@ This project includes:
 
 - [Nix](https://nixos.org/download.html) with flakes enabled
 - [direnv](https://direnv.net/) (optional but recommended)
-- Okta developer account or access to Okta organization
+- Okta super admin account or access to Okta organization
 
 Note: if you don't have Nix installed, you can still follow along with your own
 vault binary installed on your system. You can install vault for your system
@@ -58,13 +58,14 @@ vault binary installed on your system. You can install vault for your system
    # Create unencrypted file first
    cat > config/okta/okta-terraform-secrets.yaml <<EOF
    okta_org_name: "your-okta-org"
+   okta_client_id: "your-terraform-app-client-id"
    okta_private_key_id: "key-id-from-okta"
    okta_private_key: |
      -----BEGIN PRIVATE KEY-----
      your-private-key
      -----END PRIVATE KEY-----
    EOF
-   
+
    # Encrypt in-place
    sops -e -i config/okta/okta-terraform-secrets.yaml
    mv config/okta/okta-terraform-secrets.yaml config/okta/okta-terraform-secrets.sops.yaml
@@ -76,8 +77,8 @@ vault binary installed on your system. You can install vault for your system
    terraform init && terraform apply
    ```
 
-5. **Extract Vault app credentials:**
-   From Okta Admin Console → Applications → Vault app → General tab:
+5. **Extract Vault app credentials:** From Okta Admin Console → Applications →
+   Vault app → General tab:
    - Copy Client ID and Client Secret
 
    Configure Vault OIDC secrets:
@@ -88,7 +89,7 @@ vault binary installed on your system. You can install vault for your system
    okta_client_id: "vault-web-app-client-id"
    okta_client_secret: "vault-web-app-client-secret"
    EOF
-   
+
    # Encrypt in-place
    sops -e -i config/vault/okta-vault-secrets.yaml
    mv config/vault/okta-vault-secrets.yaml config/vault/okta-vault-secrets.sops.yaml
@@ -102,7 +103,7 @@ vault binary installed on your system. You can install vault for your system
    ```bash
    export VAULT_ADDR="http://127.0.0.1:8200"
    export VAULT_TOKEN="root"
-   
+
    cd config/vault
    terraform init && terraform apply
    ```
@@ -115,14 +116,14 @@ vault binary installed on your system. You can install vault for your system
 
 ```
 vault/
-├── config/                           # Terraform configurations
+├── config/                          # Terraform configurations
 │   ├── okta/                        # Okta infrastructure (groups, apps)
-│   │   └── okta-terraform-secrets.sops.yaml  # Terraform provider credentials
+│   │   └── okta-secrets.sops.yaml   # Terraform Okta app secrets
 │   └── vault/                       # Vault configuration (auth, policies)
-│       └── okta-vault-secrets.sops.yaml      # Vault OIDC credentials  
+│       └── okta-secrets.sops.yaml   # Vault Okta OIDC secrets  
 ├── packages/vault.nix               # Custom Vault v1.20.3 package
-├── modules/vault.nix                # NixOS service module
-├── vault-service.nix                # Production NixOS config
+├── modules/vault.nix                # NixOS service module (example, unused)
+├── vault-service.nix                # Production NixOS config (example, unused)
 ├── devshell.nix                     # Development environment
 ├── flake.nix                        # Nix flake configuration
 └── key.txt                          # Age private key (git-ignored)
@@ -133,16 +134,14 @@ vault/
 ### Okta Setup
 
 **Phase 1**: Manual service app creation for Terraform provider authentication
-**Phase 2**: Terraform-managed groups and Vault web app creation  
-**Phase 3**: Manual groups claim configuration on created web app
-
-Post-terraform manual step:
-- Navigate to Vault web app → Sign On tab → Edit OpenID Connect ID Token
-- Add groups claim: Name=`groups`, Value type=Groups, Filter=Starts with `vault-`
+**Phase 2**: Terraform-managed groups and Vault web app creation\
 
 Terraform creates:
-- Four Vault groups (`vault-admins`, `vault-developers`, `vault-operators`, `vault-audit-viewers`)
-- Web application for Vault OIDC with proper redirect URIs (`omit_secret = true` by default)
+
+- Four Vault groups (`vault-admins`, `vault-developers`, `vault-operators`,
+  `vault-audit-viewers`)
+- Web application for Vault OIDC with proper redirect URIs (`omit_secret = true`
+  by default)
 
 ### Vault Policies
 
@@ -156,6 +155,7 @@ Terraform creates:
 ### SOPS Operations
 
 **Edit encrypted files:**
+
 ```bash
 # Decrypt, edit, re-encrypt automatically
 sops config/okta/okta-terraform-secrets.sops.yaml
@@ -163,6 +163,7 @@ sops config/vault/okta-vault-secrets.sops.yaml
 ```
 
 **View encrypted files:**
+
 ```bash
 # View decrypted content (read-only)
 sops -d config/okta/okta-terraform-secrets.sops.yaml
@@ -170,6 +171,7 @@ sops -d config/vault/okta-vault-secrets.sops.yaml
 ```
 
 **Encrypt new files:**
+
 ```bash
 # Create plaintext file, then encrypt
 sops -e -i your-secrets.yaml
