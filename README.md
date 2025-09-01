@@ -134,7 +134,7 @@ vault/
 ### Okta Setup
 
 **Phase 1**: Manual service app creation for Terraform provider authentication
-**Phase 2**: Terraform-managed groups and Vault web app creation\
+**Phase 2**: Terraform-managed groups and Vault web app creation
 
 Terraform creates:
 
